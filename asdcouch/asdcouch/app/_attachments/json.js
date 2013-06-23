@@ -1,7 +1,7 @@
 //Gary W. Hunter Looney
-//Project 2
+//Project 3
 //Add Character JSON Java
-//Term 1306
+//Term 1305
 
 
 
