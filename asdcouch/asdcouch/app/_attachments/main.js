@@ -3,7 +3,8 @@
 //Add Character Java
 //Term 1306
 
-
+//Create and Update
+$.couch.db('asdcouch').saveDoc(list, {
 
 var cname = document.getElementById("cname");
 var sex = document.getElementById("sex");
@@ -28,12 +29,60 @@ var saveData = function (key) {
 	localStorage.setItem(id, JSON.stringify(item));
 	alert("Character Added!");
 };
-var clearData = function () {
-	localStorage.clear();
-	alert("Data Cleared!");
+function editTheItem () {
+	var value = localStorage.getItem(this.key);
+	var item = JSON.parse(value);
+	
+	('cname').value = item.cname[1];
+	('birthdate').value = item.birthdate[1];
+	('race').value = item.race[1];
+	('height').value = item.height[1];
+	var radios = document.forms[0].sex;
+	for(var i = 0; i<radios.length; i++) {
+		if (radios[i].value == "Male" && item.sex[1] == "Male") {
+			radios[i].setAttribute("checked", "checked");
+		} else if (radios[i].value == "Female" && item.sex[1] == "Female") {
+			radios[i].setAttribute("checked", "checked");
+		}
+	}
+	if (item.glasses[1] == "Yes") {
+		('glasses').setAttribute("checked", "checked");
+	}
+	
+	save.removeEventListener("click", saveData);
+	('submitButton').value = "Edit Contact";
+	var editTheSubmit = ('submitButton');
+		editTheSubmit.addEventListener("click", saveData);
+		editTheSubmit.key = this.key;
+	
+	}
 
-};
+	var errorDisplay = document.getElementById("errorSystem");
+
+	var submitButton = document.getElementById("submitButton");
+		submitButton.addEventListener("click", saveData);
+	}
+});
+
+//Destroy
+$.couch.db('asd').removeDoc({
+	_id : id,
+	_rev : rev
+	},{
+	success: function(data){
+	alerts('List has been deleted.');
+	var clearButton = document.getElementById("clearButton");
+		clearButton.addEventListener("click", clearData);		
+	var clearData = function () {
+		localStorage.clear();
+		alert("Data Cleared!");
+	}
+});
+
 //Display
+$.couch.db('asdcouch').view('asdcouch/lists', {
+	key: urlData['id'],
+	
 var getTheData = function () {
 	if (localStorage.length === 0){
 		alert("There is no data in Local Storage so default data was added.");
@@ -114,43 +163,11 @@ function deleteTheItem () {
 		alert("Character was NOT deleted.")
 	}
 }
-function editTheItem () {
-	var value = localStorage.getItem(this.key);
-	var item = JSON.parse(value);
-	
-	('cname').value = item.cname[1];
-	('birthdate').value = item.birthdate[1];
-	('race').value = item.race[1];
-	('height').value = item.height[1];
-	var radios = document.forms[0].sex;
-	for(var i = 0; i<radios.length; i++) {
-		if (radios[i].value == "Male" && item.sex[1] == "Male") {
-			radios[i].setAttribute("checked", "checked");
-		} else if (radios[i].value == "Female" && item.sex[1] == "Female") {
-			radios[i].setAttribute("checked", "checked");
-		}
-	}
-	if (item.glasses[1] == "Yes") {
-		('glasses').setAttribute("checked", "checked");
-	}
-	
-	
-	save.removeEventListener("click", saveData);
-	
-	('submitButton').value = "Edit Contact";
-	var editTheSubmit = ('submitButton');
-	editTheSubmit.addEventListener("click", saveData);
-	editTheSubmit.key = this.key;
-	
-}
-
-var errorDisplay = document.getElementById("errorSystem");
 
 var displayButton = document.getElementById('displayButton');
 	displayButton.addEventListener("click", getTheData);
 
-var clearButton = document.getElementById("clearButton");
-	clearButton.addEventListener("click", clearData);
+}
+});
 
-var submitButton = document.getElementById("submitButton");
-	submitButton.addEventListener("click", saveData);
+	
